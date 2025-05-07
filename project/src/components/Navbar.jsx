@@ -16,7 +16,7 @@ const Navbar = () => {
       <div className="container mx-auto px-6">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <a href="/" className="text-2xl font-bold text-blue-600">US2UPS</a>
+            <a href="/" className="text-2xl font-bold text-blue-600">Hubsite</a>
           </div>
 
           {/* Desktop Menu */}
