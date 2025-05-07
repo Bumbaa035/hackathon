@@ -1,21 +1,22 @@
 import React from 'react';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Features from './components/Features';
-import Testimonials from './components/Testimonials';
-import FAQ from './components/FAQ';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/layout/Navbar';
+import Footer from './components/layout/Footer';
+import Home from './pages/Home';
 
 function App() {
   return (
-    <div className="min-h-screen">
-      <Navbar />
-      <main className="pt-16">
-        <Hero />
-        <Features />
-        <Testimonials />
-        <FAQ />
-      </main>
-    </div>
+    <Router>
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
