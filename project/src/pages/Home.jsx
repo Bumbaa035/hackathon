@@ -6,6 +6,7 @@ import FAQ from '../components/home/FAQ';
 import Statistics from '../components/home/Statistics';
 import HowItWorks from '../components/home/HowItWorks';
 import Contact from '../components/shared/Contact';
+import { useAuth } from '../context/authContext';
 
 const Home = () => {
   return (

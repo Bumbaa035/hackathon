@@ -1,11 +1,25 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/authContext';
+import { doSignOut } from '../../firebase/auth';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { userLoggedIn, currentUser } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    try {
+      await doSignOut();
+      navigate('/');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
 
   const navItems = [
-    { name: 'Нүүр', href: '#home' },
-    { name: 'Онцлог', href: '#features' },
+    { name: 'Нүүр', href: '/' },
+    { name: 'Онцлог', href: '/features' },
     { name: 'Түгээмэл асуултууд', href: '#faq' },
     { name: 'Холбоо барих', href: '#contact' }
   ];
@@ -15,23 +29,48 @@ const Navbar = () => {
       <div className="container mx-auto px-6">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <a href="/" className="text-2xl font-bold text-blue-600">HubSite</a>
+            <Link to="/" className="text-2xl font-bold text-blue-600">HubSite</Link>
           </div>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.name}
-                href={item.href}
+                to={item.href}
                 className="text-gray-600 hover:text-blue-600 transition duration-300"
               >
                 {item.name}
-              </a>
+              </Link>
             ))}
-            <button className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition duration-300">
-              Бүртгүүлэх
-            </button>
+            {userLoggedIn ? (
+              <div className="flex items-center space-x-4">
+                <span className="text-gray-600">
+                  {currentUser?.displayName || currentUser?.email}
+                </span>
+                <button
+                  onClick={handleSignOut}
+                  className="bg-red-600 text-white px-6 py-2 rounded-full hover:bg-red-700 transition duration-300"
+                >
+                  Гарах
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-4">
+                <Link
+                  to="/login"
+                  className="text-gray-600 hover:text-blue-600 transition duration-300"
+                >
+                  Нэвтрэх
+                </Link>
+                <Link
+                  to="/register"
+                  className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition duration-300"
+                >
+                  Бүртгүүлэх
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -56,18 +95,48 @@ const Navbar = () => {
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navItems.map((item) => (
-                <a
+                <Link
                   key={item.name}
-                  href={item.href}
+                  to={item.href}
                   className="block px-3 py-2 text-gray-600 hover:text-blue-600 transition duration-300"
                   onClick={() => setIsOpen(false)}
                 >
                   {item.name}
-                </a>
+                </Link>
               ))}
-              <button className="w-full mt-4 bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition duration-300">
-                Бүртгүүлэх
-              </button>
+              {userLoggedIn ? (
+                <>
+                  <div className="px-3 py-2 text-gray-600">
+                    {currentUser?.displayName || currentUser?.email}
+                  </div>
+                  <button
+                    onClick={() => {
+                      handleSignOut();
+                      setIsOpen(false);
+                    }}
+                    className="block w-full mt-4 bg-red-600 text-white text-center px-6 py-2 rounded-full hover:bg-red-700 transition duration-300"
+                  >
+                    Гарах
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    onClick={() => setIsOpen(false)}
+                    className="block px-3 py-2 text-gray-600 hover:text-blue-600 transition duration-300"
+                  >
+                    Нэвтрэх
+                  </Link>
+                  <Link
+                    to="/register"
+                    onClick={() => setIsOpen(false)}
+                    className="block w-full mt-4 bg-blue-600 text-white text-center px-6 py-2 rounded-full hover:bg-blue-700 transition duration-300"
+                  >
+                    Бүртгүүлэх
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         )}
