@@ -1,5 +1,5 @@
 my-app/
-├── client/ # React frontend (your existing code goes here)
+├── client/                   # React frontend
 │ ├── public/
 │ ├── src/
 │ │ ├── components/
@@ -9,15 +9,15 @@ my-app/
 │ │ └── ...
 │ └── package.json
 │
-├── server/ # Express backend
-│ ├── controllers/ # Route logic
-│ ├── routes/ # Route definitions
-│ ├── models/ # Mongoose/DB models (if using MongoDB)
-│ ├── middleware/ # Custom middlewares (e.g., auth)
-│ ├── utils/ # Utility functions
-│ ├── config/ # Configuration (e.g., DB connection)
-│ ├── app.js # Express app setup
-│ └── server.js # Entry point (listens on port)
+├── server/                    # Express backend
+│ ├── controllers/             # Route logic
+│ ├── routes/                   # Route definitions
+│ ├── models/                   # Mongoose/DB models (if using MongoDB)
+│ ├── middleware/               # Custom middlewares (e.g., auth)
+│ ├── utils/                     # Utility functions
+│ ├── config/                     # Configuration (e.g., DB connection)
+│ ├── app.js                       # Express app setup
+│ └── server.js                     # Entry point (listens on port)
 │
-├── package.json # Optional root package.json (monorepo setup)
+├── package.json                   # Optional root package.json (monorepo setup)
 └── README.md
