@@ -6,8 +6,10 @@ import FAQ from '../components/home/FAQ';
 import Statistics from '../components/home/Statistics';
 import HowItWorks from '../components/home/HowItWorks';
 import Contact from '../components/shared/Contact';
+//import { useAuth } from '../context/authContext';
 
 const Home = () => {
+  //const { currentUser } = useAuth()
   return (
     <div>
       <Hero />
@@ -17,6 +19,7 @@ const Home = () => {
       <Testimonials />
       <FAQ />
       <Contact />
+      {/* <div className='text-2xl font-bold pt-14'>Hello {currentUser.displayName ? currentUser.displayName : currentUser.email}, you are now logged in.</div> */}
     </div>
   );
 };

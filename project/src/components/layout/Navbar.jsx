@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { name: 'Нүүр', href: '#home' },
-    { name: 'Онцлог', href: '#features' },
+    { name: 'Нүүр', href: '/' },
+    { name: 'Онцлог', href: '/features' },
     { name: 'Түгээмэл асуултууд', href: '#faq' },
     { name: 'Холбоо барих', href: '#contact' }
   ];
@@ -29,9 +30,12 @@ const Navbar = () => {
                 {item.name}
               </a>
             ))}
-            <button className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition duration-300">
-              Бүртгүүлэх
-            </button>
+             <Link
+    to="/register"
+    className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition duration-300"
+  >
+    Бүртгүүлэх
+    </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -65,9 +69,13 @@ const Navbar = () => {
                   {item.name}
                 </a>
               ))}
-              <button className="w-full mt-4 bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition duration-300">
-                Бүртгүүлэх
-              </button>
+              <Link
+        to="/register"
+        onClick={() => setIsOpen(false)}
+        className="block w-full mt-4 bg-blue-600 text-white text-center px-6 py-2 rounded-full hover:bg-blue-700 transition duration-300"
+      >
+        Бүртгүүлэх
+      </Link>
             </div>
           </div>
         )}
