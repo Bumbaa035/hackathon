@@ -42,26 +42,7 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Auth Buttons */}
-      <div className="absolute top-6 right-6 flex items-center gap-4">
-        <motion.button
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-          className="px-4 py-2 text-gray-700 hover:text-gray-900 font-medium transition-colors duration-200"
-        >
-          Нэвтрэх
-        </motion.button>
-        <motion.button
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.6 }}
-          className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-colors duration-200"
-        >
-          Бүртгүүлэх
-        </motion.button>
-      </div>
-
+      
       <div className="container mx-auto px-6 relative">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left Column - Text Content */}

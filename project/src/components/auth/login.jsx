@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import { Navigate, Link } from 'react-router-dom'
+import { Navigate, Link, useNavigate } from 'react-router-dom'
 import { doSignInWithEmailAndPassword, doSignInWithGoogle } from '../../firebase/auth'
 import { useAuth } from '../../context/authContext'
 
 const Login = () => {
     const { userLoggedIn } = useAuth()
+    const navigate = useNavigate()
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -15,8 +16,10 @@ const Login = () => {
         e.preventDefault()
         if(!isSigningIn) {
             setIsSigningIn(true)
+            setErrorMessage('')
             try {
                 await doSignInWithEmailAndPassword(email, password)
+                navigate('/home', { replace: true })
             } catch (error) {
                 setErrorMessage(error.message) // Error message display
                 setIsSigningIn(false)
@@ -24,15 +27,27 @@ const Login = () => {
         }
     }
     
-
-    const onGoogleSignIn = (e) => {
+    const onGoogleSignIn = async (e) => {
         e.preventDefault()
         if (!isSigningIn) {
             setIsSigningIn(true)
-            doSignInWithGoogle().catch(err => {
+            setErrorMessage('')
+            try {
+                await doSignInWithGoogle()
+                navigate('/home', { replace: true })
+            } catch (err) {
                 setIsSigningIn(false)
-                setErrorMessage(err.message) // Google Sign In Error handling
-            })
+                // Show more user-friendly error messages
+                if (err.message.includes('not enabled')) {
+                    setErrorMessage('Google Sign-In is not available at the moment. Please try email sign-in instead.');
+                } else if (err.message.includes('popup was closed')) {
+                    setErrorMessage('Sign-in was cancelled. Please try again.');
+                } else if (err.message.includes('Multiple popup requests')) {
+                    setErrorMessage('Please wait a moment before trying again.');
+                } else {
+                    setErrorMessage(err.message);
+                }
+            }
         }
     }
     

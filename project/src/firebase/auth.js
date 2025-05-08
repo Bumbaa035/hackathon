@@ -18,11 +18,30 @@ export const doSignInWithEmailAndPassword = (email, password) => {
 };
 
 export const doSignInWithGoogle = async () => {
-  const provider = new GoogleAuthProvider();
-  const result = await signInWithPopup(auth, provider);
-  const user = result.user;
-
-  // add user to firestore
+  try {
+    const provider = new GoogleAuthProvider();
+    // Add scopes if needed
+    provider.addScope('profile');
+    provider.addScope('email');
+    
+    // Force account selection
+    provider.setCustomParameters({
+      prompt: 'select_account'
+    });
+    
+    const result = await signInWithPopup(auth, provider);
+    return result.user;
+  } catch (error) {
+    if (error.code === 'auth/operation-not-allowed') {
+      throw new Error('Google Sign-In is not enabled. Please contact the administrator.');
+    } else if (error.code === 'auth/popup-closed-by-user') {
+      throw new Error('Sign-in popup was closed before completing the sign-in.');
+    } else if (error.code === 'auth/cancelled-popup-request') {
+      throw new Error('Multiple popup requests were made. Please try again.');
+    } else {
+      throw error;
+    }
+  }
 };
 
 export const doSignOut = () => {

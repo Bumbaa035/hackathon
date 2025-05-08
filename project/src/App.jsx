@@ -7,23 +7,29 @@ import Login from './components/auth/login';
 import Register from './components/auth/register';
 import { AuthProvider } from './context/authContext';
 
+function AppRoutes() {
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-grow">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
+  );
+}
 
 function App() {
   return (
     <AuthProvider>
-    <Router>
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path='/register' element={<Register/>}/>
-            <Route path='/login' element={<Login/>}/>
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </Router>
+      <Router>
+        <AppRoutes />
+      </Router>
     </AuthProvider>
   );
 }
