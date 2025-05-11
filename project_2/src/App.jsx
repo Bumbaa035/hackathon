@@ -15,8 +15,10 @@ function AppRoutes() {
       <Navbar />
       <main className="flex-grow">
         <Routes>
+          <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          
         </Routes>
       </main>
     </div>
@@ -29,8 +31,6 @@ function App() {
       <Router>
         <AppRoutes />
       </Router>
-      <Sender />
-      
     </AuthProvider>
   );
 }

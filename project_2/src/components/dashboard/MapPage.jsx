@@ -59,7 +59,6 @@ setLocation(updatedLocation);
       />
 
       <Polygon positions={restrictedZone} color="red" />
-      {/* 👇 ЭНЭ хэсэг бол live байршил харуулах хэсэг 👇 */}
       {location && (
         <Marker position={location}>
           <Popup>📱 Гар утасны байршил</Popup>
