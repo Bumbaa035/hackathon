@@ -9,9 +9,13 @@ import Contact from '../components/shared/Contact';
 import { useAuth } from '../context/authContext';
 import MapComponent from '../components/dashboard/Map';
 import MapPage from '../components/dashboard/MapPage';
+import Navbar from '../components/layout/Navbar';
 const Home = () => {
   return (
-    <MapPage />
+    <div>
+      <MapPage />
+
+    </div>
   );
 };
 

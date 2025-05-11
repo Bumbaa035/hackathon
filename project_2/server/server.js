@@ -9,52 +9,49 @@ const io = socketIo(server, {
   cors: { origin: "*" }
 });
 
-// Хязгаарлалттай бүсийн координат
-const restrictedZone = [
-  { lat: 47.9186, lng: 106.9170 },
-  { lat: 47.9186, lng: 106.9195 },
-  { lat: 47.9170, lng: 106.9195 },
-  { lat: 47.9170, lng: 106.9170 },
-  { lat: 47.9186, lng: 106.9170 }
-];
+// Restricted area (same as frontend)
+const restrictedZone = turf.polygon([[
+  [106.8530, 47.9186],
+  [106.8570, 47.9226],
+  [106.9555, 47.9286],
+  [106.9445, 47.8970],
+  [106.9345, 47.8990],
+  [106.8875, 47.8960],
+  [106.8725, 47.8910],
+  [106.8570, 47.8970],
+  [106.8530, 47.9186]  // polygon should be closed
+]]);
 
-// Хэрэглэгч бүрийн байршлыг хадгалах
 const userLocations = {};
 
-function isInRestrictedArea(location) {
-  const pt = turf.point([location.lng, location.lat]);
-  const poly = turf.polygon([[...restrictedZone.map(p => [p.lng, p.lat])]]);
-  return turf.booleanPointInPolygon(pt, poly);
-}
-
 io.on('connection', (socket) => {
-  console.log('📲 Клиент холбогдлоо');
+  console.log('Шинэ холболт:', socket.id);     
 
-  socket.on('locationUpdate', (data) => {
+  socket.on('locationUpdate', (data) => {      
     const { userId, lat, lng } = data;
+    console.log(`User ${userId}: ${lat}, ${lng}`);
 
-    if (!userId || lat == null || lng == null) return;
+    userLocations[userId] = { lat, lng };      
 
-    const coords = { lat, lng };
-    userLocations[userId] = coords;
+    // Бусад клиентүүдэд хэрэглэгч бүрийн байршлыг илгээх
+    io.emit('locationUpdate', {
+      userId,
+      lat,
+      lng,
+    });
 
-    console.log(`📍 Хэрэглэгч ${userId}-ын байршил:`, coords);
+    // Хязгаарлагдсан бүсэд орсон эсэхийг шалгах
+    const point = turf.point([lng, lat]);      
+    const isInside = turf.booleanPointInPolygon(point, restrictedZone);
 
-    const inZone = isInRestrictedArea(coords);
-    if (inZone) {
-      console.log(`⚠️ Хэрэглэгч ${userId} хориотой бүсэд орсон!`);
-      socket.emit('alert', '⚠️ Та хориотой бүс рүү орсон байна!');
+    if (isInside) {
+      console.log(`⚠️ User ${userId} улаан бүсээд орлоо`);
+      // зөвхөн тухайн хэрэглэгчид буцааж сэрэмжлүүлэг илгээх
+      socket.emit('alert', '⚠️ Та хориотой бүс  рүү орсон байна!');
     }
-
-    // Бүх хэрэглэгчдийн байршлыг дамжуулах
-    io.emit('allLocations', userLocations);
-  });
-
-  socket.on('disconnect', () => {
-    console.log('❌ Клиент салсан');
   });
 });
 
 server.listen(3001, () => {
-  console.log('🚀 Сервер 3001 порт дээр ажиллаж байна');
+  console.log('Сервер ажиллаж байна: порт 3001');
 });
