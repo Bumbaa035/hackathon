@@ -26,7 +26,7 @@ const Navbar = () => {
       <div className="container mx-auto px-6">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <Link to="/" className="text-2xl font-bold text-blue-600">HubSite</Link>
+            <Link to="/" className="text-2xl font-bold text-blue-600">ByteCraze</Link>
           </div>
 
           {/* Desktop Menu */}
@@ -60,8 +60,17 @@ const Navbar = () => {
                 >
                   Нэвтрэх
                 </Link>
+                
+                <Link
+                  to="/register"
+                  className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition duration-300"
+                >
+                  Бүртгүүлэх
+                </Link>
               </div>
+              
             )}
+            
           </div>
 
           {/* Mobile Menu Button */}

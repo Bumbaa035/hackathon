@@ -6,6 +6,7 @@ import Login from './components/auth/login';
 import { AuthProvider } from './context/authContext';
 // App.jsx
 import { io } from 'socket.io-client';
+import Register from './components/auth/register';
 const socket = io('http://210.109.53.233:3001');
 
 
@@ -18,6 +19,7 @@ function AppRoutes() {
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           
         </Routes>
       </main>

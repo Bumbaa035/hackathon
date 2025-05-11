@@ -24,8 +24,6 @@ const restrictedZone = turf.polygon([[
 ]]);
 
 const userLocations = {};
-const userSockets = {}; // userId: socket
-
 
 io.on('connection', (socket) => {
   console.log('Шинэ холболт:', socket.id);     
@@ -34,25 +32,7 @@ io.on('connection', (socket) => {
     const { userId, lat, lng } = data;
     console.log(`User ${userId}: ${lat}, ${lng}`);
 
-
-    
-    const previous = userLocations[userId];
-
-    // Байршил өөрчлөгдсөн эсэхийг шалгах
-    const hasMoved = !previous || previous.lat !== lat || previous.lng !== lng;
-
-    userLocations[userId] = {
-      lat,
-      lng,
-      lastMovedAt: hasMoved ? Date.now() : previous?.lastMovedAt || Date.now()
-    };
-
-    // socket хадгалах
-    userSockets[userId] = socket;
-
-
-
-
+    userLocations[userId] = { lat, lng };      
 
     // Бусад клиентүүдэд хэрэглэгч бүрийн байршлыг илгээх
     io.emit('locationUpdate', {
@@ -76,27 +56,3 @@ io.on('connection', (socket) => {
 server.listen(3001, () => {
   console.log('Сервер ажиллаж байна: порт 3001');
 });
-
-
-// ⏰ 1 цаг хөдлөөгүй хэрэглэгч шалгах (5 мин тутамд)
-setInterval(() => {
-  const now = Date.now();
-  const ONE_HOUR = 10000;
-
-  for (const [userId, data] of Object.entries(userLocations)) {
-    if (now - data.lastMovedAt > ONE_HOUR) {
-      const socket = userSockets[userId];
-      if (socket) {
-        console.log(`🚨 Хэрэглэгч ${userId} 1 цаг хөдлөөгүй`);
-        socket.emit('alert', '🚨 Та 1 цаг хөдлөөгүй байна. Та зүгээр байна уу?');
-        io.emit('adminAlert', {
-          userId,
-          lat: data.lat,
-          lng: data.lng,
-          message: `⚠️ Хэрэглэгч ${userId} 1 цаг хөдлөөгүй байна.`
-        });
-        // Та энд webhook, email, эсвэл admin push alert нэмэх боломжтой
-      }
-    }
-  }
-}, 3 * 60 * 1000); // 5 минут тутам
