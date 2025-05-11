@@ -3,6 +3,7 @@ import Hero from '../components/home/Hero';
 import Features from '../components/home/Features';
 import Testimonials from '../components/home/Testimonials';
 import FAQ from '../components/home/FAQ';
+import Statistics from '../components/home/Statistics';
 import HowItWorks from '../components/home/HowItWorks';
 import Contact from '../components/shared/Contact';
 import { useAuth } from '../context/authContext';
