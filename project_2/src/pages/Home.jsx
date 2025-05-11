@@ -6,17 +6,12 @@ import FAQ from '../components/home/FAQ';
 import HowItWorks from '../components/home/HowItWorks';
 import Contact from '../components/shared/Contact';
 import { useAuth } from '../context/authContext';
-
+import MapComponent from '../components/dashboard/Map';
+import MapPage from '../components/dashboard/MapPage';
 const Home = () => {
   return (
     <div>
-      <Hero />
-      <Features />
-      <Statistics />
-      <HowItWorks />
-      <Testimonials />
-      <FAQ />
-      <Contact />
+      <MapPage />
     </div>
   );
 };
